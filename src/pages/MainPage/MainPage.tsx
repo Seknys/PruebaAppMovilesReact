@@ -58,9 +58,11 @@ export default function MainPage({ history }: any) {
             </IonButton>
           </Link>
 
-          <IonButton size="large" shape="round">
-            VER USUARIOS
-          </IonButton>
+          <Link to="/view-users">
+            <IonButton size="large" shape="round">
+              VER USUARIOS
+            </IonButton>
+          </Link>
         </div>
       </IonContent>
     </IonPage>

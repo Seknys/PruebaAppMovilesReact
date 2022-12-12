@@ -27,6 +27,7 @@ import { useEffect, useState } from "react";
 import { getCurrentUser, getUserByUid } from "./service/auth";
 import { IUser } from "./interface/user";
 import { UserContextProvider } from "./context/userContext";
+import DisplayUsers from "./pages/DisplayUsers/DisplayUsers";
 
 setupIonicReact();
 
@@ -36,8 +37,6 @@ const App: React.FC = () => {
   useEffect(() => {
     const getUserByUidSnapshot = (snapshot: any) => {
       const user = snapshot.data();
-      // console.log("UserRole: ", user.role);
-      console.log("USER: ", user);
 
       setUser(user);
     };
@@ -64,6 +63,9 @@ const App: React.FC = () => {
             <Route exact path="/main-page" component={MainPage} />
             <Route exact path="/register-user-censo">
               <Register />
+            </Route>
+            <Route exact path="/view-users">
+              <DisplayUsers />
             </Route>
           </IonRouterOutlet>
         </IonReactRouter>
