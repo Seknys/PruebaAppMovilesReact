@@ -35,8 +35,17 @@ function Register() {
   const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
 
+  const [position, setPosition] = useState<Geoposition>();
+
   const getLocation = async () => {
     setLoading(true);
+    try {
+      const position = await Geolocation.getCurrentPosition();
+      setPosition(position);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+    }
   };
 
   const takePhoto = async () => {
@@ -178,7 +187,9 @@ function Register() {
         class="ion-padding-vertical"
         onClick={getLocation}
       >
-        LOCALIZACIÓN
+        {position
+          ? `${position.coords.latitude} ${position.coords.longitude}`
+          : "Conseguir ubicación"}
       </IonButton>
     </div>
   );
