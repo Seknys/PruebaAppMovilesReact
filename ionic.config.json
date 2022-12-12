@@ -1,0 +1,7 @@
+{
+  "name": "prueba-react-app-moviles",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
