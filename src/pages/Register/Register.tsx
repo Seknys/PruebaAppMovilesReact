@@ -8,11 +8,23 @@ import {
   IonInput,
   IonImg,
   IonButton,
+  IonLoading,
 } from "@ionic/react";
 import { Link } from "react-router-dom";
 import UserContext from "../../context/userContext";
 import { addUsersData } from "../../service/user";
-
+import { defineCustomElements } from "@ionic/pwa-elements/loader";
+import {
+  Camera,
+  CameraResultType,
+  CameraSource,
+  Photo,
+} from "@capacitor/camera";
+import { Filesystem, Directory } from "@capacitor/filesystem";
+import { Preferences } from "@capacitor/preferences";
+import { Capacitor } from "@capacitor/core";
+import { camera, trash, close } from "ionicons/icons";
+import { Geolocation, Geoposition } from "@ionic-native/geolocation";
 function Register() {
   const [name, setName] = useState<any>();
   const [lastname, setLastname] = useState<any>();
@@ -21,7 +33,21 @@ function Register() {
   const [id, setId] = useState<any>();
   const { user } = useContext(UserContext);
 
-  console.log("USER Register: ", user);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [position, setPosition] = useState<Geoposition>();
+
+  const geoLocation = async () => {
+    setLoading(true);
+    try {
+      const position = await Geolocation.getCurrentPosition();
+      setPosition(position);
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log("error", error);
+    }
+  };
 
   const submitRegister = () => {
     const newUserRegistered = {
@@ -36,6 +62,20 @@ function Register() {
         console.log("res succes: ", res);
       });
     }
+  };
+
+  const takePhoto = async () => {
+    const photo = await Camera.getPhoto({
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Camera,
+      quality: 100,
+    });
+    const fileName = new Date().getTime() + ".jpeg";
+    const newFile = {
+      filepath: fileName,
+      webviewPath: photo.webPath,
+    };
+    console.log("newFile: ", newFile);
   };
 
   return (
@@ -123,16 +163,31 @@ function Register() {
       >
         GUARDAR
       </IonButton>
-      <Link to="/Login">
-        <IonButton
-          color="tertiary"
-          size="default"
-          style={{ paddingInline: "46.8%" }}
-          class="ion-padding-vertical"
-        >
-          SIGUIENTE
-        </IonButton>
-      </Link>
+      <IonButton
+        color="tertiary"
+        size="default"
+        style={{ paddingInline: "45%" }}
+        class="ion-padding-vertical"
+        onClick={() => takePhoto()}
+      >
+        FOTO DE LA CASA{" "}
+      </IonButton>
+      <IonLoading
+        isOpen={loading}
+        message={"Getting Location ...."}
+        onDidDismiss={() => setLoading(false)}
+      ></IonLoading>
+      <IonButton
+        color="tertiary"
+        size="default"
+        style={{ paddingInline: "46%" }}
+        class="ion-padding-vertical"
+        onClick={geoLocation}
+      >
+        {position
+          ? `${position.coords.latitude} ${position.coords.longitude}`
+          : "Conseguir ubicación"}
+      </IonButton>
     </div>
   );
 }
