@@ -1,6 +1,14 @@
 import { useState } from 'react';
-import { IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonImg, IonButton   } from '@ionic/react';
+import { IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonImg, IonButton, IonLoading   } from '@ionic/react';
 import { Link } from "react-router-dom";
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Preferences } from '@capacitor/preferences';
+import { Capacitor } from '@capacitor/core';
+import { camera, trash, close } from 'ionicons/icons';
+import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+
 
 function Register() {
 
@@ -9,6 +17,21 @@ function Register() {
     const [numfam, setNumfam] = useState('');
     const [dir, setdir] = useState('');
     const [id, setId] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const getLocation = async () => {
+        setLoading(true);
+    }
+
+    const takePhoto = async () => {
+        const photo = await Camera.getPhoto({
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Camera,
+          quality: 100,
+        });
+      }
+
+      
 
     return (
         <div>
@@ -46,9 +69,12 @@ function Register() {
             
 
             <IonButton  color="tertiary" size="default" style={{ paddingInline: '47%' }} class="ion-padding-vertical">GUARDAR</IonButton >
-            <Link to="/Login">  
-            <IonButton  color="tertiary" size="default" style={{ paddingInline: '46.8%' }} class="ion-padding-vertical" >SIGUIENTE</IonButton >
-            </Link>
+            <IonButton  color="tertiary" size="default" style={{ paddingInline: '45%' }} class="ion-padding-vertical"  onClick={() => takePhoto()}>FOTO DE LA CASA </IonButton >
+            <IonLoading isOpen={loading} message={"Getting Location ...."} onDidDismiss={() => setLoading(false)}></IonLoading>
+            <IonButton   color="tertiary" size="default" style={{ paddingInline: '46%' }} class="ion-padding-vertical" onClick={getLocation}>LOCALIZACIÓN</IonButton >
+           
+
+            
            
             
             
