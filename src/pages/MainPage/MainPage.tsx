@@ -8,14 +8,25 @@ import {
 } from "@ionic/react";
 import React from "react";
 import ExploreContainer from "../../components/ExploreContainer";
+import { signOutUser } from "../../service/auth";
 
-export default function MainPage() {
+export default function MainPage({ history }: any) {
+  const logout = () => {
+    // localStorage.clear();
+    signOutUser();
+    history.push("/login");
+    console.log("logout");
+  };
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle>CENSO</IonTitle>
         </IonToolbar>
+        <IonButton onClick={logout}>
+          <IonTitle>LOGOUT</IonTitle>
+        </IonButton>
       </IonHeader>
       <IonContent
         fullscreen
