@@ -1,9 +1,9 @@
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
-import Login from './pages/Login/Login';
-import Register from './pages/Register/Register';
+import { Redirect, Route } from "react-router-dom";
+import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
+import { IonReactRouter } from "@ionic/react-router";
+import Home from "./pages/Home";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 
@@ -23,25 +23,53 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import MainPage from "./pages/MainPage/MainPage";
+import { useEffect, useState } from "react";
+import { getCurrentUser, getUserByUid } from "./service/auth";
+import { IUser } from "./interface/user";
+import { UserContextProvider } from "./context/userContext";
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/login" component={Login} />
+const App: React.FC = () => {
+  const [user, setUser] = useState<IUser | null>(null);
 
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-        <Route exact path="/main-page" component={MainPage} />
-        <Route exact path="/register">
-          <Register />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
+  useEffect(() => {
+    const getUserByUidSnapshot = (snapshot: any) => {
+      const user = snapshot.data();
+      // console.log("UserRole: ", user.role);
+      console.log("USER: ", user);
+
+      setUser(user);
+    };
+    const getCurrentUserSnapshot = (snapshot: any) => {
+      if (snapshot) {
+        const userUid = snapshot.uid;
+        getUserByUid(userUid, getUserByUidSnapshot);
+      } else {
+        setUser(null);
+      }
+    };
+    getCurrentUser(getCurrentUserSnapshot);
+  }, []);
+  return (
+    <IonApp>
+      <UserContextProvider value={{ user, setUser }}>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route exact path="/login" component={Login} />
+
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+            <Route exact path="/main-page" component={MainPage} />
+            <Route exact path="/register-user-censo">
+              <Register />
+            </Route>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </UserContextProvider>
+    </IonApp>
+  );
+};
 
 export default App;

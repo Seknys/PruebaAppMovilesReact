@@ -7,6 +7,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import React from "react";
+import { Link } from "react-router-dom";
 import ExploreContainer from "../../components/ExploreContainer";
 import { signOutUser } from "../../service/auth";
 
@@ -51,9 +52,12 @@ export default function MainPage({ history }: any) {
             // backgroundColor: "red",
           }}
         >
-          <IonButton size="large" style={{ marginBottom: 55 }} shape="round">
-            REGISTRAR USUARIOS
-          </IonButton>
+          <Link to="/register-user-censo">
+            <IonButton size="large" style={{ marginBottom: 55 }} shape="round">
+              REGISTRAR USUARIOS
+            </IonButton>
+          </Link>
+
           <IonButton size="large" shape="round">
             VER USUARIOS
           </IonButton>
