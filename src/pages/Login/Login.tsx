@@ -8,9 +8,13 @@ import {
   IonLabel,
   IonInput,
   IonButton,
+  IonFab,
+  IonFabButton,
+  IonIcon,
 } from "@ionic/react";
 import { userLogin } from "../../service/auth";
 import { set } from "@firebase/database";
+import { people } from "ionicons/icons";
 
 function Login({ history }: any) {
   const [email, setEmail] = useState<any>();
@@ -32,6 +36,20 @@ function Login({ history }: any) {
         console.log(err);
       });
     setIsLoad(false);
+  };
+
+  const defaultAcount = () => {
+    userLogin("s@s.com", "123456")
+      .then((res) => {
+        console.log("login ", res);
+        setTimeout(() => {
+          setIsLoad(false);
+          history.push("/main-page");
+        }, 2000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -71,7 +89,6 @@ function Login({ history }: any) {
         ></IonInput>
       </IonItem>
 
-
       <IonButton
         disabled={isLoad}
         color={isLoad ? "dark" : "tertiary"}
@@ -82,6 +99,53 @@ function Login({ history }: any) {
       >
         ENTER
       </IonButton>
+      {/* <IonFab>
+        <IonFabButton>
+          <IonIcon icon={people}></IonIcon>
+        </IonFabButton>
+      </IonFab> */}
+      <IonTitle class="ion-text-center" style={{ margin: "50px 0px" }}>
+        O inicia con una cuentra predefinida
+      </IonTitle>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          // justifyContent: "space-around",
+          width: "100%",
+        }}
+      >
+        <IonButton
+          disabled={isLoad}
+          color={isLoad ? "dark" : "tertiary"}
+          size="default"
+          style={{ paddingInline: "47%" }}
+          class="ion-padding-vertical"
+          onClick={defaultAcount}
+        >
+          <IonIcon icon={people}></IonIcon>
+        </IonButton>
+        <IonButton
+          disabled={isLoad}
+          color={isLoad ? "dark" : "tertiary"}
+          size="default"
+          style={{ paddingInline: "47%" }}
+          class="ion-padding-vertical"
+          onClick={defaultAcount}
+        >
+          <IonIcon icon={people}></IonIcon>
+        </IonButton>
+        <IonButton
+          disabled={isLoad}
+          color={isLoad ? "dark" : "tertiary"}
+          size="default"
+          style={{ paddingInline: "47%" }}
+          class="ion-padding-vertical"
+          onClick={defaultAcount}
+        >
+          <IonIcon icon={people}></IonIcon>
+        </IonButton>
+      </div>
     </div>
   );
 }

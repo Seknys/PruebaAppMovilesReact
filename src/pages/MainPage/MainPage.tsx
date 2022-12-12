@@ -22,12 +22,21 @@ export default function MainPage({ history }: any) {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonTitle>CENSO</IonTitle>
+        <IonToolbar style={{ width: "100%" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <IonTitle>CENSO</IonTitle>
+            <IonButton color="tertiary" onClick={logout}>
+              <IonTitle>LOGOUT</IonTitle>
+            </IonButton>
+          </div>
         </IonToolbar>
-        <IonButton onClick={logout}>
-          <IonTitle>LOGOUT</IonTitle>
-        </IonButton>
       </IonHeader>
       <IonContent
         fullscreen
@@ -53,14 +62,21 @@ export default function MainPage({ history }: any) {
           }}
         >
           <Link to="/register-user-censo">
-            <IonButton size="large" style={{ marginBottom: 55 }} shape="round">
+            <IonButton
+              color="tertiary"
+              size="large"
+              style={{ marginBottom: 55 }}
+              shape="round"
+            >
               REGISTRAR USUARIOS
             </IonButton>
           </Link>
 
-          <IonButton size="large" shape="round">
-            VER USUARIOS
-          </IonButton>
+          <Link to="/view-users">
+            <IonButton color="tertiary" size="large" shape="round">
+              VER USUARIOS
+            </IonButton>
+          </Link>
         </div>
       </IonContent>
     </IonPage>

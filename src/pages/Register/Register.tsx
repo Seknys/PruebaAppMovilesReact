@@ -12,7 +12,7 @@ import {
 } from "@ionic/react";
 import { Link } from "react-router-dom";
 import UserContext from "../../context/userContext";
-import { addUsersData } from "../../service/user";
+import { addUsersData, getUrlImage, uploadImage } from "../../service/user";
 import { defineCustomElements } from "@ionic/pwa-elements/loader";
 import {
   Camera,
@@ -25,7 +25,7 @@ import { Preferences } from "@capacitor/preferences";
 import { Capacitor } from "@capacitor/core";
 import { camera, trash, close } from "ionicons/icons";
 import { Geolocation, Geoposition } from "@ionic-native/geolocation";
-function Register() {
+function Register({ history }: any) {
   const [name, setName] = useState<any>();
   const [lastname, setLastname] = useState<any>();
   const [numfam, setNumfam] = useState<any>();
@@ -35,6 +35,7 @@ function Register() {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [position, setPosition] = useState<Geoposition>();
+  const [file, setFile] = useState<any>();
 
   const geoLocation = async () => {
     setLoading(true);
@@ -50,18 +51,32 @@ function Register() {
   };
 
   const submitRegister = () => {
-    const newUserRegistered = {
-      name: name,
-      lastname: lastname,
-      numfam: numfam,
-      dir: dir,
-      id: id,
-    };
-    if (user) {
-      addUsersData(user.uid, newUserRegistered).then((res) => {
-        console.log("res succes: ", res);
+    console.log("FILE: ", file.name);
+    const response = uploadImage(file);
+    response.then((res) => {
+      console.log("res: ", res.ref.fullPath);
+      getUrlImage(res.ref.fullPath).then((url) => {
+        console.log("url: ", url);
+        const newUserRegistered = {
+          name: name,
+          lastname: lastname,
+          numfam: numfam,
+          dir: dir,
+          id: id,
+          img: url,
+          ubication: `${position?.coords.latitude} ${position?.coords.longitude}`,
+        };
+        if (user) {
+          addUsersData(user.uid, newUserRegistered).then((res) => {
+            console.log("res succes: ", res);
+
+            history.push("/main-page");
+          });
+        } else {
+          console.log("no hay usuario");
+        }
       });
-    }
+    });
   };
 
   const takePhoto = async () => {
@@ -75,6 +90,7 @@ function Register() {
       filepath: fileName,
       webviewPath: photo.webPath,
     };
+    setFile(newFile);
     console.log("newFile: ", newFile);
   };
 
@@ -168,9 +184,18 @@ function Register() {
         size="default"
         style={{ paddingInline: "45%" }}
         class="ion-padding-vertical"
-        onClick={() => takePhoto()}
+        // onClick={() => takePhoto()}
       >
-        FOTO DE LA CASA{" "}
+        <input
+          type="file"
+          onChange={(e: any) => {
+            const file = e.target.files[0];
+            if (!file) {
+              return;
+            }
+            setFile(file);
+          }}
+        ></input>
       </IonButton>
       <IonLoading
         isOpen={loading}

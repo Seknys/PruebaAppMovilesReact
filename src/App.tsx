@@ -27,6 +27,7 @@ import { useEffect, useState } from "react";
 import { getCurrentUser, getUserByUid } from "./service/auth";
 import { IUser } from "./interface/user";
 import { UserContextProvider } from "./context/userContext";
+import DisplayUsers from "./pages/DisplayUsers/DisplayUsers";
 
 setupIonicReact();
 
@@ -59,11 +60,12 @@ const App: React.FC = () => {
             <Route exact path="/login" component={Login} />
 
             <Route exact path="/">
-              <Redirect to="/home" />
+              <Redirect to="/login" />
             </Route>
             <Route exact path="/main-page" component={MainPage} />
-            <Route exact path="/register-user-censo">
-              <Register />
+            <Route exact path="/register-user-censo" component={Register} />
+            <Route exact path="/view-users">
+              <DisplayUsers />
             </Route>
           </IonRouterOutlet>
         </IonReactRouter>
