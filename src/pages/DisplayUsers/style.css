@@ -1,0 +1,15 @@
+.user-deleteBttn {
+  transition: all 0.6s;
+}
+.user-deleteBttn:hover {
+  background-color: blueviolet;
+}
+
+.deleteBtn {
+  display: none;
+  transition: all 0.6s;
+}
+
+.user-deleteBttn:hover > .deleteBtn {
+  display: block;
+}

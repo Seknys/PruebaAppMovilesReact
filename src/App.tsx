@@ -62,8 +62,12 @@ const App: React.FC = () => {
             <Route exact path="/">
               <Redirect to="/login" />
             </Route>
-            <Route exact path="/main-page" component={MainPage} />
-            <Route exact path="/register-user-censo" component={Register} />
+            <Route exact path="/main-page">
+              <MainPage />
+            </Route>
+            <Route exact path="/register-user-censo">
+              <Register />
+            </Route>
             <Route exact path="/view-users">
               <DisplayUsers />
             </Route>

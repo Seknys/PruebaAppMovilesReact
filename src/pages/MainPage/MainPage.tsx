@@ -2,6 +2,8 @@ import {
   IonButton,
   IonContent,
   IonHeader,
+  IonItem,
+  IonLabel,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -39,25 +41,16 @@ export default function MainPage({ history }: any) {
         </IonToolbar>
       </IonHeader>
       <IonContent
-        fullscreen
         style={{
-          width: "30%",
-          display: "Flex",
-          alignSelf: "center",
+          width: "80%",
         }}
       >
-        {/* <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Blank</IonTitle>
-          </IonToolbar>
-        </IonHeader> */}
-        {/* <ExploreContainer /> */}
         <div
           style={{
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            marginTop: "20%",
+            marginTop: "50px",
             // backgroundColor: "red",
           }}
         >

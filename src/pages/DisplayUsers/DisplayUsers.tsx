@@ -1,9 +1,11 @@
 import {
+  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonContent,
   IonHeader,
   IonPage,
   IonTitle,
@@ -12,6 +14,8 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import UserContext from "../../context/userContext";
 import { getUsersRegisteredByUser } from "../../service/user";
+import "./style.css";
+import { Virtuoso } from "react-virtuoso";
 
 export default function DisplayUsers({ history }: any) {
   const [usersRegistered, setUsersRegistered] = useState<any>([]);
@@ -37,48 +41,67 @@ export default function DisplayUsers({ history }: any) {
           <IonTitle>PErsonas registradas</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          flexDirection: "row",
-          width: "80%",
-        }}
-      >
-        {usersRegistered.map((user: any, index: number) => {
-          console.log("USER: ", user);
-          return (
-            <div
-              key={index}
-              style={{
-                background: "#fff",
-                width: "300px",
-                marginLeft: "15px",
-                marginRight: "15px",
-                marginBottom: "25px",
-              }}
-            >
-              <IonCard key={index}>
-                <img alt={user.name} src={user.img} />
-                <IonCardHeader>
-                  <IonCardTitle>{user.name}</IonCardTitle>
-                  <IonCardSubtitle>{user.id}</IonCardSubtitle>
-                </IonCardHeader>
+      <IonContent>
+        {/* <Virtuoso className="ion-content-scroll-host"> */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "row",
+            width: "80%",
+          }}
+        >
+          {usersRegistered.map((user: any, index: number) => {
+            console.log("USER: ", user);
+            return (
+              <div
+                key={index}
+                style={{
+                  background: "#fff",
+                  width: "300px",
+                  marginLeft: "15px",
+                  marginRight: "15px",
+                  marginBottom: "25px",
+                }}
+                onClick={() => {
+                  console.log("Value: ", user);
+                }}
+              >
+                <IonCard key={index} className="user-deleteBttn">
+                  <IonButton color="danger" size="small" className="deleteBtn">
+                    x
+                  </IonButton>
 
-                <IonCardContent>
-                  Direccion:{user.dir}
-                  <br />
-                  Numero de familia:{user.numfam}
-                  <br />
-                  Apellido:{user.lastname}
-                  <br />
-                  Ubicacion GPS:{user.ubication}
-                </IonCardContent>
-              </IonCard>
-            </div>
-          );
-        })}
-      </div>
+                  <img
+                    alt={user.name}
+                    src={user.img}
+                    width="280"
+                    height="220"
+                    style={{
+                      objectFit: "cover",
+                    }}
+                  />
+                  <IonCardHeader>
+                    <IonCardTitle>{user.name}</IonCardTitle>
+                    <IonCardSubtitle>{user.id}</IonCardSubtitle>
+                  </IonCardHeader>
+
+                  <IonCardContent>
+                    Direccion:{user.dir}
+                    <br />
+                    Numero de familia:{user.numfam}
+                    <br />
+                    Apellido:{user.lastname}
+                    <br />
+                    Ubicacion GPS:{user.ubication}
+                  </IonCardContent>
+                </IonCard>
+              </div>
+            );
+          })}
+        </div>
+        {/* </Virtuoso> */}
+      </IonContent>
     </IonPage>
   );
 }
